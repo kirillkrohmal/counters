@@ -40,7 +40,7 @@
             ul.appendChild(li)
 
             const incr = document.createElement("a")
-            incr.textContent = "[incr]"
+            incr.textContent = "[increment]"
 
             li.appendChild(incr)
             incr.href = "#"
@@ -52,7 +52,7 @@
 
             const del = document.createElement("a")
             del.href = "#"
-            del.textContent = "[del]"
+            del.textContent = "[delete]"
             li.appendChild(del)
             del.onclick = function () {
                 fetch("api/v1/counter/" + key, {method: "DELETE"})
@@ -60,7 +60,6 @@
             .then(obj => {renderList();getSum()})
             }
         }
-        //getSum()
     })
     }
 
