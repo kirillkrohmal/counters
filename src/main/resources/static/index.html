@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Counter</title>
+</head>
+<body>
+<div>
+    <label>
+        <input><button name="add">add key</button>
+
+        <input><button name="delete">delete key</button>
+
+    </label>
+
+</div>
+</body>
+
+<script>
+    var button = document.querySelector("button");
+
+    button.onclick = function (e) {
+        var input = document.querySelector("input");
+        var value = input.value.trim();
+        if (!value)
+            {alert("please enter key name");return}
+
+        if (!value.match(/^[a-z]+$/)){alert("please enter only latin letters");return}
+
+        fetch("/api/v1/counter/get/" + value)
+        .then(res => res.json())
+
+        .then(count => alert(count))
+
+    }
+
+</script>
+
+</html>
