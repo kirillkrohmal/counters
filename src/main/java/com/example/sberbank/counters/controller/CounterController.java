@@ -49,4 +49,15 @@ public class CounterController {
 
         return n;
     }
+
+    @PostMapping("sumCounters/{name}")
+    public int sumCounters(@PathVariable("name") String name) {
+
+        Integer value = counters.get(name);
+        if (value == null) {
+
+        }
+
+        return 1;
+    }
 }
