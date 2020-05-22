@@ -25,7 +25,6 @@ public class CounterController {
             counters.put(name, value);
         }
 
-
         return value;
     }
 
@@ -42,10 +41,8 @@ public class CounterController {
 
         int sum = 0;
 
-        Iterator<Integer> iter = values.iterator();
-        while(iter.hasNext()){
-
-            sum += iter.next().intValue();
+        for (Integer value : values) {
+            sum += value;
         }
 
         return sum;
@@ -57,10 +54,10 @@ public class CounterController {
         if (value == null) {
             value = 0;
         }
-        int n = value.intValue();
+        int n = value;
         n++;
 
-        counters.put(name, new Integer(n));
+        counters.put(name, n);
 
         return n;
     }
