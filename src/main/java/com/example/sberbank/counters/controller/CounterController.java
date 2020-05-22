@@ -21,15 +21,15 @@ public class CounterController {
     public int getCounter(@PathVariable("name") String name){
         Integer value = counters.get(name);
         if (value == null) {
-            value = new Integer(0);
+            value = 0;
 
             counters.put(name, value);
         }
 
-        int n = value.intValue();
+        int n = value;
         n++;
 
-        counters.put(name, new Integer(n));
+        counters.put(name, n);
 
         return n;
     }
@@ -39,12 +39,12 @@ public class CounterController {
 
         Integer value = counters.get(name);
         if (value == null) {
-            value = new Integer(0);
+            value = 0;
 
             counters.remove(name, value);
         }
 
-        int n = value.intValue();
+        int n = value;
         n--;
 
         return n;
