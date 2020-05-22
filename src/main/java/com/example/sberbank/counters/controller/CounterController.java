@@ -35,24 +35,14 @@ public class CounterController {
     }
 
     @DeleteMapping("delete/{name}")
-    public int delete(@PathVariable("name") String name) {
-
+    public void delete(@PathVariable("name") String name) {
         Integer value = counters.get(name);
-        if (value == null) {
-            value = 0;
 
-            counters.remove(name, value);
-        }
-
-        int n = value;
-        n--;
-
-        return n;
+        counters.remove(name, value);
     }
 
     @PostMapping("sumCounters/{name}")
     public int sumCounters(@PathVariable("name") String name) {
-
         Integer value = counters.get(name);
         if (value == null) {
 
