@@ -2,22 +2,21 @@ package com.example.sberbank.counters.controller;
 
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 
 @RestController
-@RequestMapping("api/v1/counter")
+@RequestMapping("api/v1")
 public class CounterController {
     private HashMap <String, Integer> counters = new HashMap<String, Integer>();
 
-    @GetMapping("keys")
-    public Set<String> getKeys() {
-        Set<String> keySet = counters.keySet();
+    @GetMapping("counters")
+    public Set<Map.Entry<String, Integer>> getEntries() {
+        Set<Map.Entry<String, Integer>> keySet = counters.entrySet();
 
         return keySet;
     }
 
-    @GetMapping("get/{name}")
+    @GetMapping("counter/{name}")
     public int getCounter(@PathVariable("name") String name){
         Integer value = counters.get(name);
         if (value == null) {
@@ -26,28 +25,43 @@ public class CounterController {
             counters.put(name, value);
         }
 
-        int n = value;
-        n++;
 
-        counters.put(name, n);
-
-        return n;
+        return value;
     }
 
-    @DeleteMapping("delete/{name}")
-    public void delete(@PathVariable("name") String name) {
-        Integer value = counters.get(name);
+    @DeleteMapping("counter/{name}")
+    public boolean delete(@PathVariable("name") String name) {
+        counters.remove(name);
 
-        counters.remove(name, value);
+        return true;
     }
 
-    @PostMapping("sumCounters/{name}")
-    public int sumCounters(@PathVariable("name") String name) {
-        Integer value = counters.get(name);
-        if (value == null) {
+    @GetMapping("counters/sum")
+    public int sumCounters() {
+        Collection<Integer> values = counters.values();
 
+        int sum = 0;
+
+        Iterator<Integer> iter = values.iterator();
+        while(iter.hasNext()){
+
+            sum += iter.next().intValue();
         }
 
-        return 1;
+        return sum;
+    }
+
+    @PutMapping("counter/{name}")
+    public int getCounters(@PathVariable("name") String name){
+        Integer value = counters.get(name);
+        if (value == null) {
+            value = 0;
+        }
+        int n = value.intValue();
+        n++;
+
+        counters.put(name, new Integer(n));
+
+        return n;
     }
 }

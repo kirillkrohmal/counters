@@ -7,35 +7,75 @@
 <body>
 <div>
     <label>
-        <input><button name="add">add key</button>
-    </label>
-
-    <label>
-        <input><button name="delete">delete key</button>
-    </label>
-
-    <label>
-        <button name="sumCounters">sum counters</button>
+        <input><button>add key</button>
     </label>
 
 </div>
+
+<ul></ul>
+<p>Sum: <span></span></p>
 </body>
 
 <script>
     var button = document.querySelector("button");
 
+    function getSum() {
+        fetch("api/v1/counters/sum")
+            .then(res => res.json())
+    .then(sum => document.querySelector("span").textContent = sum)
+    }
+
+    function renderList() {
+        fetch("/api/v1/counters")
+            .then(res => res.json())
+
+    .then(arr => {
+            const ul = document.querySelector("ul")
+
+            ul.innerHTML = ""
+            for(const obj of arr) {
+            const key = Object.keys(obj)[0]
+            const li = document.createElement("li")
+            li.innerHTML = key + " : " + obj[key] + "&nbsp;"
+            ul.appendChild(li)
+
+            const incr = document.createElement("a")
+            incr.textContent = "[incr]"
+
+            li.appendChild(incr)
+            incr.href = "#"
+            incr.onclick = function () {
+                fetch("api/v1/counter/" + key, {method: "PUT"})
+                    .then(res => res.json())
+            .then(obj => {renderList();getSum()})
+            }
+
+            const del = document.createElement("a")
+            del.href = "#"
+            del.textContent = "[del]"
+            li.appendChild(del)
+            del.onclick = function () {
+                fetch("api/v1/counter/" + key, {method: "DELETE"})
+                    .then(res => res.json())
+            .then(obj => {renderList();getSum()})
+            }
+        }
+        //getSum()
+    })
+    }
+
     button.onclick = function (e) {
         var input = document.querySelector("input");
         var value = input.value.trim();
         if (!value)
-            {alert("please enter key name");return}
+        {alert("please enter key name");return}
 
         if (!value.match(/^[a-z]+$/)){alert("please enter only latin letters");return}
 
-        fetch("/api/v1/counter/get/" + value)
-        .then(res => res.json())
+        fetch("/api/v1/counter/" + value)
+            .then(res => res.json())
 
-        .then(count => alert(count))
+    .then(count => {renderList();getSum()})
     }
 
 </script>
